@@ -5,7 +5,6 @@ GitLab
 
         SCHEME=http
         DOMAIN=site.local
-        HOSTNAME=gitlab.site.local
         
 Для запуска GitLab так же необходима внешняя сеть с названием gitlab
 
