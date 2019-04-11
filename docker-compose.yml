@@ -1,0 +1,38 @@
+version: "3"
+services:
+
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.${DOMAIN}'
+    container_name: "gitlab"
+    shm_size: 256M
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    volumes:
+      - "config:/etc/gitlab"
+      - "logs:/var/log/gitlab"
+      - "data:/var/opt/gitlab"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.default.protocol=${SCHEME}"
+      - "traefik.domain=${DOMAIN}"
+      - "traefik.docker.network=gitlab"
+      - "traefik.backend=gitlab"
+      - "traefik.frontend.rule=Host:gitlab.${DOMAIN}"
+    networks:
+      - "gitlab"
+
+networks:
+  gitlab:
+    external: true
+
+volumes:
+  config:
+  logs:
+  data:
